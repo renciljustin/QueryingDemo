@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="btn-group mb-3 text-right d-block">
+    <button type="button" class="btn btn-link" [disabled]="decrementDisabled()" (click)="goToFirst()"><i class="fas fa-angle-double-left"></i></button>
+    <button type="button" class="btn btn-link" [disabled]="decrementDisabled()" (click)="goToPrev()"><i class="fas fa-angle-left"></i></button>
+    <button *ngFor="let page of pages" type="button" class="btn btn-link" [class.active]="page === currentPage" (click)="onPageChange(page)">
+      {{page}}
+    </button>
+    <button type="button" class="btn btn-link" [disabled]="incrementDisabled()" (click)="goToNext()"><i class="fas fa-angle-right"></i></button>
+    <button type="button" class="btn btn-link" [disabled]="incrementDisabled()" (click)="goToLast()"><i class="fas fa-angle-double-right"></i></button>
+  </div>
+</div>

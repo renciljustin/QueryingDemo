@@ -19,6 +19,7 @@ namespace PaginationDemo.Persistence
             _context = context;
 
         }
+
         public async Task<BookResult> GetBooksAsync(BookQuery bookQuery)
         {
             var books = _context.Books
@@ -27,20 +28,29 @@ namespace PaginationDemo.Persistence
                     .ThenInclude(bg => bg.Genre)
                 .AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(bookQuery.SearchKey))
+            {
+                books = books.Where(b => b.Title.Contains(bookQuery.SearchKey));
+            }
+
             if (bookQuery.AuthorId != null)
             {
                 books = books.Where(b => b.AuthorId == bookQuery.AuthorId);
             }
 
-            var columnNames = new Dictionary<string, Expression<Func<Book, object>>>()
+            if (bookQuery.GenreId != null)
+            {
+                books = books.Where(b => b.Genres.Any(bg => bg.GenreId == bookQuery.GenreId));
+            }
+
+            var columnsMap = new Dictionary<string, Expression<Func<Book, object>>>()
             {
                 ["Title"] = book => book.Title,
                 ["Price"] = book => book.Price,
                 ["YearReleased"] = book => book.YearReleased,
                 ["Author"] = book => book.Author.Name
             };
-
-            books = books.ApplyOrdering(bookQuery, columnNames);
+            books = books.ApplyOrdering(bookQuery, columnsMap);
 
             var totalCount = await books.CountAsync();
 

@@ -1,20 +1,66 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="search" class="sr-only">Search</label>
+            <input [(ngModel)]="bookQuery.searchKey" type="search" name="search" id="search" class="form-control" placeholder="search book title...">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="author" class="sr-only">Author</label>
+            <select [(ngModel)]="selectedAuthor" name="author" id="author" class="form-control">
+              <option [value]="0">--Select Author--</option>
+              <option *ngFor="let author of authors" [value]="author.id">
+                {{author.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="genre" class="sr-only">Genre</label>
+            <select [(ngModel)]="selectedGenre" name="genre" id="genre" class="form-control">
+              <option [value]="0">--Select Genre--</option>
+              <option *ngFor="let genre of genres" [value]="genre.id">
+                {{genre.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary btn-block" (click)="onQuery()"><i class="fas fa-search"></i> Search</button>
+          </div>
+        <div class="col-md-2">
+          <button class="btn btn-secondary btn-block" (click)="onResetQuery()"><i class="fas fa-filter"></i> Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="bookResult.totalCount > 0; then books; else noRecord"></ng-container>
+  <ng-template #books>
+    <table class="table table-hover">
+      <thead>
+        <th *ngFor="let column of columnsMap" (click)="onSort(column)">
+            {{column.name}}
+            <i *ngIf="column.sortable && selectedColumn === column" class="fas" [ngClass]="{ 'fa-caret-up': !bookQuery.isSortDescending, 'fa-caret-down': bookQuery.isSortDescending }"></i>
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of bookResult.books">
+          <td>{{book.title | uppercase}}</td>
+          <td class="text-right">{{book.price | currency:'PHP '}}</td>
+          <td class="text-center">{{book.yearReleased}}</td>
+          <td>{{book.authorName}}</td>
+          <td>{{book.genreNames.join(', ')}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <app-pagination [pageSize]="bookQuery.pageSize" [totalItems]="bookResult.totalCount" (pageChange)="onPageChange($event)"></app-pagination>
+  </ng-template>
+  <ng-template #noRecord>
+    <div class="alert alert-danger text-uppercase text-center">No records to show</div>
+  </ng-template>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
