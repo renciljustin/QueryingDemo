@@ -5,7 +5,7 @@
         <div class="col-md-12">
           <div class="form-group">
             <label for="search" class="sr-only">Search</label>
-            <input [(ngModel)]="bookQuery.searchKey" type="search" name="search" id="search" class="form-control" placeholder="search book title...">
+            <input [(ngModel)]="bookQuery.searchKey" type="search" name="search" id="search" class="form-control" placeholder="search book title..." autocomplete="off">
           </div>
         </div>
         <div class="col-md-4">
@@ -58,7 +58,7 @@
         </tr>
       </tbody>
     </table>
-    <app-pagination [pageSize]="bookQuery.pageSize" [totalItems]="bookResult.totalCount" (pageChange)="onPageChange($event)"></app-pagination>
+    <app-pagination [currentPage]="bookQuery.page" [pageSize]="bookQuery.pageSize" [totalItems]="bookResult.totalCount" [showStatus]="true" (pageChange)="onPageChange($event)"></app-pagination>
   </ng-template>
   <ng-template #noRecord>
     <div class="alert alert-danger text-uppercase text-center">No records to show</div>

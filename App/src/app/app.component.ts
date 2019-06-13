@@ -43,6 +43,7 @@ export class AppComponent implements OnInit {
   };
 
   bookQuery: BookQuery = {
+    page: 1,
     pageSize: PAGE_SIZE
   };
 
@@ -75,6 +76,7 @@ export class AppComponent implements OnInit {
   }
 
   onQuery() {
+    this.bookQuery.page = 1;
     this.bookQuery.authorId = +this.selectedAuthor;
     this.bookQuery.genreId = +this.selectedGenre;
     this.getBooks(true);
@@ -84,6 +86,7 @@ export class AppComponent implements OnInit {
     this.selectedAuthor = 0;
     this.selectedGenre = 0;
     this.bookQuery = {
+      page: 1,
       pageSize: PAGE_SIZE
     };
     this.getBooks(true);
@@ -105,6 +108,6 @@ export class AppComponent implements OnInit {
   onPageChange(page: any) {
     this.bookQuery.page = page.currentPage;
     this.bookQuery.pageSize = page.pageSize;
-    this.getBooks(true);
+    this.getBooks();
   }
 }

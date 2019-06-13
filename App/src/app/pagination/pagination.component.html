@@ -1,5 +1,6 @@
-<div class="container">
-  <div class="btn-group mb-3 text-right d-block">
+<div class="container pb-3">
+  <div *ngIf="showStatus && totalItems > 0" class="text-secondary float-left mt-1">{{pageStatus}}</div>
+  <div class="btn-group text-right d-block">
     <button type="button" class="btn btn-link" [disabled]="decrementDisabled()" (click)="goToFirst()"><i class="fas fa-angle-double-left"></i></button>
     <button type="button" class="btn btn-link" [disabled]="decrementDisabled()" (click)="goToPrev()"><i class="fas fa-angle-left"></i></button>
     <button *ngFor="let page of pages" type="button" class="btn btn-link" [class.active]="page === currentPage" (click)="onPageChange(page)">

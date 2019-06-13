@@ -10,10 +10,13 @@ export class PaginationComponent implements OnChanges {
   @Input('totalItems') totalItems: number;
   // tslint:disable-next-line:no-input-rename
   @Input('pageSize') pageSize: number;
+  // tslint:disable-next-line:no-input-rename
+  @Input('currentPage') currentPage: number;
+  // tslint:disable-next-line:no-input-rename
+  @Input('showStatus') showStatus: boolean;
   // tslint:disable-next-line:no-output-rename
   @Output('pageChange') pageChange = new EventEmitter();
 
-  currentPage = 1;
   pages: any[] = [];
 
   ngOnChanges() {
@@ -42,6 +45,13 @@ export class PaginationComponent implements OnChanges {
 
   get maxPage(): number {
     return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  get pageStatus(): string {
+    const currentRecord = this.currentPage === 1 ? 1 : (this.currentPage - 1) * this.pageSize;
+    const limitRecord = currentRecord + this.pageSize > this.totalItems ? this.totalItems : currentRecord + this.pageSize;
+
+    return `showing ${currentRecord}-${limitRecord} out of ${this.totalItems} records.`;
   }
 
   onPageChange(page: number) {
